@@ -1,0 +1,48 @@
+name: "AeroDeploy Pre-flight"
+description: "Catch the mechanical App Store rejection causes (privacy manifest, required-reason APIs, PII usage descriptions, metadata) on every PR."
+author: "AeroDeploy"
+branding:
+  icon: "check-circle"
+  color: "blue"
+inputs:
+  path:
+    description: "Path to the iOS project to scan."
+    required: false
+    default: "."
+  fail-on:
+    description: "Exit non-zero when a finding at this severity or above exists (error|warning|info)."
+    required: false
+    default: "error"
+  min-severity:
+    description: "Lowest severity to report (error|warning|info)."
+    required: false
+    default: "info"
+  version:
+    description: "npm version range of @aerodeploy/cli to run."
+    required: false
+    default: "^0.1.0"
+runs:
+  using: "composite"
+  steps:
+    - name: Run AeroDeploy pre-flight
+      shell: bash
+      run: |
+        set -euo pipefail
+        json="$(npx --yes "@aerodeploy/cli@${{ inputs.version }}" "${{ inputs.path }}" \
+          --json --min-severity="${{ inputs.min-severity }}" || true)"
+
+        # Human-readable run (sets the exit code via --fail-on)
+        npx --yes "@aerodeploy/cli@${{ inputs.version }}" "${{ inputs.path }}" \
+          --fail-on="${{ inputs.fail-on }}" --min-severity="${{ inputs.min-severity }}" \
+          | tee preflight-output.txt
+        status="${PIPESTATUS[0]}"
+
+        {
+          echo "## AeroDeploy pre-flight"
+          echo ""
+          echo '```'
+          cat preflight-output.txt
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"
+
+        exit "$status"

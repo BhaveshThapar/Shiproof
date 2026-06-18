@@ -1,0 +1,82 @@
+# AeroDeploy Pre-flight
+
+Catch the mechanical App Store rejection causes **before** you submit — on every pull
+request, in under 10 minutes to install, no account migration.
+
+This is the free, open-source wedge of [AeroDeploy](./plan.md): a deterministic rules
+engine that flags the high-frequency, mechanical rejection causes Apple's automated
+review keeps catching in 2026:
+
+- **Required-reason APIs** used without a matching `PrivacyInfo.xcprivacy` declaration
+  (UserDefaults, file timestamp, system boot time, disk space, active keyboards).
+- **Missing PII usage descriptions** in `Info.plist` (camera, location, contacts,
+  tracking, and more) that crash the app and get it rejected.
+- **Metadata problems**: placeholder text, broken URLs, missing privacy policy,
+  other-platform mentions.
+
+Every check is deterministic and high-precision — no LLM, no network, no telemetry in
+this package. It either found a real, citable problem or it didn't.
+
+## Packages
+
+| Package | What it is |
+|---------|------------|
+| [`@aerodeploy/preflight-engine`](./packages/preflight-engine) | Pure rules engine. Takes a parsed project snapshot, returns findings. Fully unit-tested. |
+| [`@aerodeploy/cli`](./packages/cli) | `aerodeploy` CLI. Scans a directory, runs the engine, prints findings (human or `--json`). |
+| [`packages/action`](./packages/action) | The GitHub Action wrapper that runs the CLI on every PR. |
+
+The deterministic engine is intentionally a standalone OSS package so the free Action
+and the paid AeroDeploy backend share **one** engine and **one** test suite, while the
+corpus / prediction / appeal logic stays in a separate private codebase.
+
+## Use it as a GitHub Action
+
+```yaml
+# .github/workflows/preflight.yml
+name: AeroDeploy pre-flight
+on: [pull_request]
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aerodeploy/preflight-action@v1
+        with:
+          path: .
+          fail-on: error
+```
+
+## Use it as a CLI
+
+```bash
+npx @aerodeploy/cli .                 # scan the current directory
+npx @aerodeploy/cli ./MyApp --json    # machine-readable output
+npx @aerodeploy/cli . --fail-on=warning
+```
+
+Exit codes: `0` clean, `1` findings at/above `--fail-on`, `2` usage error.
+
+### Optional: metadata linting
+
+Drop an `aerodeploy.metadata.json` at your project root (or export it from App Store
+Connect) to lint your listing copy too:
+
+```json
+{
+  "description": "Scan and organize your receipts.",
+  "releaseNotes": "Bug fixes.",
+  "privacyPolicyUrl": "https://example.com/privacy",
+  "supportUrl": "https://example.com/support"
+}
+```
+
+## Develop
+
+```bash
+npm install
+npm run build      # tsc -b across the workspace
+npm test           # build + Node's test runner (zero extra deps)
+npm run typecheck
+```
+
+Requires Node 20+. MIT licensed.

@@ -1,0 +1,26 @@
+{
+  "name": "aerodeploy-preflight",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AeroDeploy open-source pre-flight: catch the mechanical App Store rejection causes before you submit.",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "packages/preflight-engine",
+    "packages/cli"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --noEmit false && tsc -b",
+    "clean": "tsc -b --clean",
+    "test": "npm run build && node --test \"packages/*/dist/**/*.test.js\"",
+    "lint": "tsc -b"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@aerodeploy/preflight-engine",
+  "version": "0.1.0",
+  "description": "Pure, deterministic rules engine for the high-frequency mechanical App Store rejection causes (privacy manifest, required-reason APIs, PII usage descriptions, metadata).",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsc -b",
+    "test": "tsc -b && node --test \"dist/**/*.test.js\""
+  },
+  "keywords": ["app-store", "ios", "privacy-manifest", "app-review", "preflight"],
+  "sideEffects": false
+}
