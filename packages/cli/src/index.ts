@@ -1,19 +1,44 @@
 #!/usr/bin/env node
 import { runPreflight, type Finding, type PreflightResult, type Severity } from "@aerodeploy/preflight-engine";
 import { scanProject } from "./scan.js";
+import { buildIntakePayload, reportPreflight } from "./report.js";
 
 type CliOptions = {
   path: string;
   json: boolean;
   minSeverity: Severity;
   failOn: Severity;
+  reportUrl?: string;
+  apiKey?: string;
+  appId?: string;
+  submissionId?: string;
+  buildNumber: string;
+  commitSha: string;
 };
 
 const SEVERITY_RANK: Record<Severity, number> = { info: 0, warning: 1, error: 2 };
 const SEVERITY_ICON: Record<Severity, string> = { error: "✖", warning: "▲", info: "ℹ" };
 
+function flagValue(arg: string): string | undefined {
+  const value = arg.slice(arg.indexOf("=") + 1);
+  return value.length > 0 ? value : undefined;
+}
+
 function parseArgs(argv: string[]): CliOptions {
-  const options: CliOptions = { path: ".", json: false, minSeverity: "info", failOn: "error" };
+  // API key only via env, never argv, so it doesn't leak into process listings.
+  const options: CliOptions = {
+    path: ".",
+    json: false,
+    minSeverity: "info",
+    failOn: "error",
+    buildNumber: process.env["AERODEPLOY_BUILD_NUMBER"] ?? "0",
+    commitSha: process.env["GITHUB_SHA"] ?? process.env["AERODEPLOY_COMMIT"] ?? "unknown",
+  };
+  const reportUrl = process.env["AERODEPLOY_REPORT_URL"];
+  if (reportUrl) options.reportUrl = reportUrl;
+  const apiKey = process.env["AERODEPLOY_API_KEY"];
+  if (apiKey) options.apiKey = apiKey;
+
   for (const arg of argv) {
     if (arg === "--json") options.json = true;
     else if (arg === "-h" || arg === "--help") {
@@ -23,6 +48,18 @@ function parseArgs(argv: string[]): CliOptions {
       options.minSeverity = parseSeverity(arg.split("=")[1], "--min-severity");
     } else if (arg.startsWith("--fail-on=")) {
       options.failOn = parseSeverity(arg.split("=")[1], "--fail-on");
+    } else if (arg.startsWith("--report-url=")) {
+      options.reportUrl = flagValue(arg);
+    } else if (arg.startsWith("--app-id=")) {
+      options.appId = flagValue(arg);
+    } else if (arg.startsWith("--submission-id=")) {
+      options.submissionId = flagValue(arg);
+    } else if (arg.startsWith("--build-number=")) {
+      const v = flagValue(arg);
+      if (v) options.buildNumber = v;
+    } else if (arg.startsWith("--commit=")) {
+      const v = flagValue(arg);
+      if (v) options.commitSha = v;
     } else if (!arg.startsWith("-")) {
       options.path = arg;
     } else {
@@ -53,7 +90,15 @@ function printHelp(): void {
       "  --json                 Output machine-readable JSON",
       "  --min-severity=LEVEL   Only show findings at LEVEL or above (error|warning|info)",
       "  --fail-on=LEVEL        Exit non-zero when a finding at LEVEL or above exists (default: error)",
+      "  --report-url=URL       Report this build to an AeroDeploy backend (opt-in corpus intake)",
+      "  --app-id=ID            App id for reporting (with --report-url)",
+      "  --submission-id=ID     Submission/version id for reporting",
+      "  --build-number=N       Build number (default: $AERODEPLOY_BUILD_NUMBER)",
+      "  --commit=SHA           Commit sha (default: $GITHUB_SHA)",
       "  -h, --help             Show this help",
+      "",
+      "Reporting uses $AERODEPLOY_API_KEY (never passed as a flag). It is opt-in",
+      "and never changes the exit code — the checker works fully offline.",
       "",
       "Exit codes: 0 clean, 1 findings at/above --fail-on, 2 usage error.",
       "",
@@ -98,7 +143,26 @@ function shouldFail(result: PreflightResult, failOn: Severity): boolean {
   return result.findings.some((f) => SEVERITY_RANK[f.severity] >= threshold);
 }
 
-function main(): void {
+async function reportIfConfigured(options: CliOptions, result: PreflightResult, snapshot: ReturnType<typeof scanProject>["snapshot"]): Promise<void> {
+  if (!options.reportUrl || !options.apiKey || !options.appId || !options.submissionId) return;
+  const predictedReasons = [...new Set(result.findings.map((f) => f.checkId))];
+  const payload = buildIntakePayload(snapshot, {
+    appId: options.appId,
+    submissionId: options.submissionId,
+    buildNumber: options.buildNumber,
+    commitSha: options.commitSha,
+    predictedReasons,
+  });
+  try {
+    const res = await reportPreflight(payload, { url: options.reportUrl, apiKey: options.apiKey });
+    process.stderr.write(res.ok ? "aerodeploy: build reported to corpus\n" : `aerodeploy: report failed (http ${res.status})\n`);
+  } catch (err) {
+    // Reporting must never break the check.
+    process.stderr.write(`aerodeploy: report skipped (${err instanceof Error ? err.message : String(err)})\n`);
+  }
+}
+
+async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
   const { snapshot, warnings } = scanProject(options.path);
   const result = runPreflight(snapshot, { minSeverity: options.minSeverity });
@@ -109,7 +173,8 @@ function main(): void {
     process.stdout.write(formatHuman(result, warnings, options.path) + "\n");
   }
 
+  await reportIfConfigured(options, result, snapshot);
   process.exit(shouldFail(result, options.failOn) ? 1 : 0);
 }
 
-main();
+void main();

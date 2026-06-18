@@ -56,6 +56,21 @@ npx @aerodeploy/cli . --fail-on=warning
 
 Exit codes: `0` clean, `1` findings at/above `--fail-on`, `2` usage error.
 
+### Optional: report builds to an AeroDeploy backend
+
+The checker works fully offline. If you also use the paid AeroDeploy backend, the
+CLI can report each build's fingerprint at pre-flight so the backend can later
+learn which fix resolved a rejection. It's strictly opt-in and never changes the
+exit code:
+
+```bash
+AERODEPLOY_API_KEY=... AERODEPLOY_REPORT_URL=https://api.your-aerodeploy \
+  npx @aerodeploy/cli . --app-id=<asc-app-id> --submission-id=<version-id>
+```
+
+The API key is read only from the environment (never a flag). Nothing is reported
+unless `--report-url`, the API key, `--app-id`, and `--submission-id` are all set.
+
 ### Optional: metadata linting
 
 Drop an `aerodeploy.metadata.json` at your project root (or export it from App Store
