@@ -7,12 +7,21 @@
   "bin": {
     "aerodeploy": "./dist/index.js"
   },
-  "files": ["dist", "README.md"],
+  "files": ["dist", "!dist/**/__tests__/**", "README.md"],
   "scripts": {
     "build": "tsc -b",
     "test": "tsc -b && node --test \"dist/**/*.test.js\""
   },
   "dependencies": {
     "@aerodeploy/preflight-engine": "0.1.0"
-  }
+  },
+  "keywords": ["app-store", "ios", "app-review", "preflight", "cli", "ci"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BhaveshThapar/AeroDeploy.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/BhaveshThapar/AeroDeploy/tree/main/packages/cli#readme",
+  "bugs": "https://github.com/BhaveshThapar/AeroDeploy/issues",
+  "publishConfig": { "access": "public" }
 }
