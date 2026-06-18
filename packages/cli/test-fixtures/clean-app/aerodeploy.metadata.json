@@ -1,0 +1,7 @@
+{
+  "name": "Acme Calculator",
+  "description": "A fast, private calculator with history. No ads, no tracking.",
+  "releaseNotes": "Initial release.",
+  "privacyPolicyUrl": "https://acme.example/privacy",
+  "supportUrl": "https://acme.example/support"
+}

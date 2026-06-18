@@ -8,6 +8,7 @@ import type {
 } from "./types.js";
 import { scanRequiredReasonApis } from "./checks/requiredReasonApi.js";
 import { scanPurposeStrings } from "./checks/pii.js";
+import { scanInfoPlistConfig } from "./checks/infoPlistConfig.js";
 import { lintMetadata } from "./checks/metadata.js";
 
 const SEVERITY_RANK: Record<Severity, number> = {
@@ -34,6 +35,7 @@ export function runPreflight(
   const all: Finding[] = [
     ...scanRequiredReasonApis(snapshot),
     ...scanPurposeStrings(snapshot),
+    ...scanInfoPlistConfig(snapshot),
     ...lintMetadata(snapshot.metadata),
   ];
 
