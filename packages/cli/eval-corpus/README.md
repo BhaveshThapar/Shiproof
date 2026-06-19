@@ -40,3 +40,23 @@ Drop a real (or realistically-shaped) iOS project under a new directory, add an 
 engine or a genuine issue in that app worth confirming. Keep large vendored trees out; the
 checks only read `*.swift|m|mm|h|c|cc|cpp`, `Info.plist`, `*.xcprivacy`, and the metadata
 file, so a trimmed subset is enough.
+
+## Vendored real-app fixtures
+
+`real-*` directories hold **verbatim trimmed subsets** of real, permissively-licensed
+shipping iOS apps. They prove the engine's precision on real-world code: each declares a
+required-reason API (`UserDefaults`) and is expected to stay silent because the vendored
+`PrivacyInfo.xcprivacy` declares it with an approved reason. Only the files the scanner reads
+are vendored; everything else is left upstream. Attribution + provenance:
+
+| Fixture | Upstream repo | License | Commit | Vendored files | Label |
+| --- | --- | --- | --- | --- | --- |
+| `real-netnewswire-ios` | [Ranchero-Software/NetNewsWire](https://github.com/Ranchero-Software/NetNewsWire) | MIT | `b290a9d` | `iOS/AppDefaults.swift`, `iOS/Resources/PrivacyInfo.xcprivacy` | clean |
+| `real-duckduckgo-ios` | [duckduckgo/iOS](https://github.com/duckduckgo/iOS) | Apache-2.0 | `7b3f601` | `Core/StatisticsUserDefaults.swift`, `DuckDuckGo/Info.plist`, `DuckDuckGo/PrivacyInfo.xcprivacy` | clean |
+| `real-wikipedia-ios` | [wikimedia/wikipedia-ios](https://github.com/wikimedia/wikipedia-ios) | MIT | `cffb205` | `Wikipedia/Code/NSUserDefaults+WMFApplicationDefaults.swift`, `Wikipedia/Wikipedia-Info.plist`→`Info.plist`, `Wikipedia/Resources/PrivacyInfo.xcprivacy` | clean |
+
+Notes: NetNewsWire's iOS target uses an Xcode-generated `Info.plist`, so none is checked in
+upstream and none is vendored (the config check no-ops with no plist). Wikipedia's app plist
+is named `Wikipedia-Info.plist` upstream; it is saved here as `Info.plist` — the canonical
+name the scanner matches — with contents unchanged. Only MIT / Apache-2.0 / BSD apps are
+vendored; the engine is MIT, so copyleft sources (GPL/AGPL/MPL) are never included.

@@ -2,6 +2,9 @@
   "clean-swiftui-weather": { "kind": "clean" },
   "clean-uikit-todo": { "kind": "clean" },
   "clean-game": { "kind": "clean" },
+  "real-netnewswire-ios": { "kind": "clean" },
+  "real-duckduckgo-ios": { "kind": "clean" },
+  "real-wikipedia-ios": { "kind": "clean" },
   "dirty-tracking": {
     "kind": "dirty",
     "expectCheckIds": ["purpose-string", "required-reason-api"],
