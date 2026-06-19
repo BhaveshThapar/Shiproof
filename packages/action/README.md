@@ -29,12 +29,12 @@ Pin to a release tag (e.g. `@v0.1.0`) for reproducible runs.
 
 ## Inputs
 
-| Input | Default | Description |
-|---|---|---|
-| `path` | `.` | Path to the iOS project to scan. |
-| `fail-on` | `error` | Fail the check when a finding at this severity or above exists (`error` \| `warning` \| `info`). |
-| `min-severity` | `info` | Lowest severity to report (`error` \| `warning` \| `info`). |
-| `version` | `^0.1.0` | npm version range of `@aerodeploy/cli` to run. |
+| Input          | Default  | Description                                                                                      |
+| -------------- | -------- | ------------------------------------------------------------------------------------------------ |
+| `path`         | `.`      | Path to the iOS project to scan.                                                                 |
+| `fail-on`      | `error`  | Fail the check when a finding at this severity or above exists (`error` \| `warning` \| `info`). |
+| `min-severity` | `info`   | Lowest severity to report (`error` \| `warning` \| `info`).                                      |
+| `version`      | `^0.1.0` | npm version range of `@aerodeploy/cli` to run.                                                   |
 
 ## What you get
 

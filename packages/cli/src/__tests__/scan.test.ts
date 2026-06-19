@@ -10,12 +10,15 @@ function fixture(): string {
   mkdirSync(join(root, "App"));
   mkdirSync(join(root, "node_modules", "junk"), { recursive: true });
 
-  writeFileSync(join(root, "App", "Store.swift"), "UserDefaults.standard.set(1, forKey: \"k\")");
+  writeFileSync(join(root, "App", "Store.swift"), 'UserDefaults.standard.set(1, forKey: "k")');
   writeFileSync(join(root, "App", "Info.plist"), INFO_PLIST);
   writeFileSync(join(root, "App", "PrivacyInfo.xcprivacy"), XCPRIVACY);
   // Should be ignored:
   writeFileSync(join(root, "node_modules", "junk", "Ignore.swift"), "AVCaptureSession()");
-  writeFileSync(join(root, "aerodeploy.metadata.json"), JSON.stringify({ description: "A receipt scanner.", privacyPolicyUrl: "https://x.com/p" }));
+  writeFileSync(
+    join(root, "aerodeploy.metadata.json"),
+    JSON.stringify({ description: "A receipt scanner.", privacyPolicyUrl: "https://x.com/p" }),
+  );
   return root;
 }
 

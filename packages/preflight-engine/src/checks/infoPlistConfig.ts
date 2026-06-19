@@ -12,7 +12,10 @@ import { GUIDELINES } from "../guidelines.js";
 
 const PLACEHOLDER_BUNDLE_ID = /^(com\.(example|yourcompany|test|mycompany|domainname)\b|MyApp\b)/i;
 
-function firstNonEmpty(plists: InfoPlist[], key: string): { plist: InfoPlist; value: string } | undefined {
+function firstNonEmpty(
+  plists: InfoPlist[],
+  key: string,
+): { plist: InfoPlist; value: string } | undefined {
   for (const plist of plists) {
     const value = plist.values[key];
     if (typeof value === "string" && value.trim().length > 0) return { plist, value };
@@ -35,7 +38,8 @@ export function scanInfoPlistConfig(snapshot: ProjectSnapshot): Finding[] {
       checkId: "info-plist-config",
       severity: "error",
       title: "Missing bundle identifier",
-      detail: "No Info.plist declares a non-empty CFBundleIdentifier. The build cannot be uploaded without one.",
+      detail:
+        "No Info.plist declares a non-empty CFBundleIdentifier. The build cannot be uploaded without one.",
       fix: "Set CFBundleIdentifier (reverse-DNS, e.g. com.yourbrand.app) in your app target's Info.plist or build settings.",
       guideline: GUIDELINES.accurateMetadata,
     });
@@ -56,7 +60,8 @@ export function scanInfoPlistConfig(snapshot: ProjectSnapshot): Finding[] {
       checkId: "info-plist-config",
       severity: "error",
       title: "Missing marketing version",
-      detail: "No Info.plist declares CFBundleShortVersionString. App Store Connect requires a marketing version (e.g. 1.0.0).",
+      detail:
+        "No Info.plist declares CFBundleShortVersionString. App Store Connect requires a marketing version (e.g. 1.0.0).",
       fix: "Add CFBundleShortVersionString (your public version, e.g. 1.0.0) to the app target's Info.plist.",
       guideline: GUIDELINES.accurateMetadata,
     });
@@ -67,7 +72,8 @@ export function scanInfoPlistConfig(snapshot: ProjectSnapshot): Finding[] {
       checkId: "info-plist-config",
       severity: "info",
       title: "Export-compliance key not declared",
-      detail: "ITSAppUsesNonExemptEncryption is not set. App Store Connect will block each submission with an export-compliance question until you answer it.",
+      detail:
+        "ITSAppUsesNonExemptEncryption is not set. App Store Connect will block each submission with an export-compliance question until you answer it.",
       fix: "Add ITSAppUsesNonExemptEncryption (true/false) to Info.plist to skip the manual export-compliance prompt on every upload.",
       guideline: GUIDELINES.accurateMetadata,
     });

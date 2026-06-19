@@ -1,5 +1,10 @@
 #!/usr/bin/env node
-import { runPreflight, type Finding, type PreflightResult, type Severity } from "@aerodeploy/preflight-engine";
+import {
+  runPreflight,
+  type Finding,
+  type PreflightResult,
+  type Severity,
+} from "@aerodeploy/preflight-engine";
 import { scanProject } from "./scan.js";
 import { buildIntakePayload, reportPreflight } from "./report.js";
 
@@ -117,7 +122,9 @@ function formatHuman(result: PreflightResult, warnings: string[], path: string):
     for (const finding of orderBySeverity(result.findings)) {
       lines.push(`${SEVERITY_ICON[finding.severity]} [${finding.severity}] ${finding.title}`);
       if (finding.location) {
-        const loc = finding.location.line ? `${finding.location.file}:${finding.location.line}` : finding.location.file;
+        const loc = finding.location.line
+          ? `${finding.location.file}:${finding.location.line}`
+          : finding.location.file;
         lines.push(`    at ${loc}`);
       }
       lines.push(`    ${finding.detail}`);
@@ -143,7 +150,11 @@ function shouldFail(result: PreflightResult, failOn: Severity): boolean {
   return result.findings.some((f) => SEVERITY_RANK[f.severity] >= threshold);
 }
 
-async function reportIfConfigured(options: CliOptions, result: PreflightResult, snapshot: ReturnType<typeof scanProject>["snapshot"]): Promise<void> {
+async function reportIfConfigured(
+  options: CliOptions,
+  result: PreflightResult,
+  snapshot: ReturnType<typeof scanProject>["snapshot"],
+): Promise<void> {
   if (!options.reportUrl || !options.apiKey || !options.appId || !options.submissionId) return;
   const predictedReasons = [...new Set(result.findings.map((f) => f.checkId))];
   const payload = buildIntakePayload(snapshot, {
@@ -155,10 +166,16 @@ async function reportIfConfigured(options: CliOptions, result: PreflightResult, 
   });
   try {
     const res = await reportPreflight(payload, { url: options.reportUrl, apiKey: options.apiKey });
-    process.stderr.write(res.ok ? "aerodeploy: build reported to corpus\n" : `aerodeploy: report failed (http ${res.status})\n`);
+    process.stderr.write(
+      res.ok
+        ? "aerodeploy: build reported to corpus\n"
+        : `aerodeploy: report failed (http ${res.status})\n`,
+    );
   } catch (err) {
     // Reporting must never break the check.
-    process.stderr.write(`aerodeploy: report skipped (${err instanceof Error ? err.message : String(err)})\n`);
+    process.stderr.write(
+      `aerodeploy: report skipped (${err instanceof Error ? err.message : String(err)})\n`,
+    );
   }
 }
 

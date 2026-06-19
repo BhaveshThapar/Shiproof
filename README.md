@@ -19,11 +19,11 @@ this package. It either found a real, citable problem or it didn't.
 
 ## Packages
 
-| Package | What it is |
-|---------|------------|
-| [`@aerodeploy/preflight-engine`](./packages/preflight-engine) | Pure rules engine. Takes a parsed project snapshot, returns findings. Fully unit-tested. |
-| [`@aerodeploy/cli`](./packages/cli) | `aerodeploy` CLI. Scans a directory, runs the engine, prints findings (human or `--json`). |
-| [`packages/action`](./packages/action) | The GitHub Action wrapper that runs the CLI on every PR. |
+| Package                                                       | What it is                                                                                 |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [`@aerodeploy/preflight-engine`](./packages/preflight-engine) | Pure rules engine. Takes a parsed project snapshot, returns findings. Fully unit-tested.   |
+| [`@aerodeploy/cli`](./packages/cli)                           | `aerodeploy` CLI. Scans a directory, runs the engine, prints findings (human or `--json`). |
+| [`packages/action`](./packages/action)                        | The GitHub Action wrapper that runs the CLI on every PR.                                   |
 
 The deterministic engine is intentionally a standalone OSS package so the free Action
 and the paid AeroDeploy backend share **one** engine and **one** test suite, while the

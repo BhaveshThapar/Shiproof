@@ -2,7 +2,7 @@
 
 Pre-flight your iOS project for the high-frequency **mechanical** App Store rejection
 causes — privacy manifest gaps, required-reason APIs, missing PII usage descriptions, and
-metadata problems — *before* you submit. Deterministic, high-precision, runs fully offline.
+metadata problems — _before_ you submit. Deterministic, high-precision, runs fully offline.
 
 The CLI is the I/O layer around [`@aerodeploy/preflight-engine`](https://www.npmjs.com/package/@aerodeploy/preflight-engine):
 it walks a directory, parses `PrivacyInfo.xcprivacy`, `Info.plist`, and metadata into a
@@ -45,11 +45,11 @@ aerodeploy ./MyApp --min-severity=warning --fail-on=warning
 
 ## Exit codes
 
-| Code | Meaning |
-|---|---|
-| `0` | Clean — no findings at or above `--fail-on`. |
-| `1` | One or more findings at or above `--fail-on`. |
-| `2` | Usage error (bad flag or bad severity value). |
+| Code | Meaning                                       |
+| ---- | --------------------------------------------- |
+| `0`  | Clean — no findings at or above `--fail-on`.  |
+| `1`  | One or more findings at or above `--fail-on`. |
+| `2`  | Usage error (bad flag or bad severity value). |
 
 This makes it drop-in for CI: a non-zero exit fails the job.
 

@@ -14,7 +14,8 @@ type Token =
   | { type: "self"; name: string }
   | { type: "text"; value: string };
 
-const TAG_RE = /<\?[\s\S]*?\?>|<!--[\s\S]*?-->|<!DOCTYPE[^>]*>|<(\/?)([A-Za-z0-9]+)[^>]*?(\/?)>|([^<]+)/g;
+const TAG_RE =
+  /<\?[\s\S]*?\?>|<!--[\s\S]*?-->|<!DOCTYPE[^>]*>|<(\/?)([A-Za-z0-9]+)[^>]*?(\/?)>|([^<]+)/g;
 
 function decodeEntities(text: string): string {
   return text
@@ -178,8 +179,6 @@ export function parsePlist(xml: string): PlistValue {
   return parseValue(cursor);
 }
 
-export function isPlistDict(
-  value: PlistValue | undefined,
-): value is { [key: string]: PlistValue } {
+export function isPlistDict(value: PlistValue | undefined): value is { [key: string]: PlistValue } {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }

@@ -23,14 +23,31 @@ test("flags placeholder text in the description", () => {
   assert.ok(findings.some((f) => f.checkId === "metadata-placeholder" && f.severity === "error"));
 });
 
+test('does not flag legitimate "placeholder text" copy as a placeholder', () => {
+  const findings = lintMetadata({
+    ...VALID,
+    description: "Start new items with customizable placeholder text so lists never look empty.",
+  });
+  assert.ok(!findings.some((f) => f.checkId === "metadata-placeholder"));
+});
+
+test("flags a leftover localhost reference in the description", () => {
+  const findings = lintMetadata({ ...VALID, description: "Connect to http://localhost to begin." });
+  assert.ok(findings.some((f) => f.checkId === "metadata-placeholder" && f.severity === "error"));
+});
+
 test("flags a missing privacy policy url", () => {
   const findings = lintMetadata({ ...VALID, privacyPolicyUrl: "" });
-  assert.ok(findings.some((f) => f.checkId === "metadata-privacy-policy" && f.severity === "error"));
+  assert.ok(
+    findings.some((f) => f.checkId === "metadata-privacy-policy" && f.severity === "error"),
+  );
 });
 
 test("warns on an Android mention in the description", () => {
   const findings = lintMetadata({ ...VALID, description: "Also available on Android devices." });
-  assert.ok(findings.some((f) => f.checkId === "metadata-other-platform" && f.severity === "warning"));
+  assert.ok(
+    findings.some((f) => f.checkId === "metadata-other-platform" && f.severity === "warning"),
+  );
 });
 
 test("flags an invalid support url", () => {

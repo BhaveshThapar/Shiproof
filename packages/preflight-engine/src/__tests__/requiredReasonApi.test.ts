@@ -16,7 +16,10 @@ test("flags UserDefaults usage with no privacy manifest", () => {
   const findings = scanRequiredReasonApis(
     snapshot({
       sourceFiles: [
-        { path: "Sources/Store.swift", content: "let d = UserDefaults.standard\nd.set(1, forKey: \"x\")" },
+        {
+          path: "Sources/Store.swift",
+          content: 'let d = UserDefaults.standard\nd.set(1, forKey: "x")',
+        },
       ],
     }),
   );
@@ -69,7 +72,9 @@ test("warns when declared with an unapproved reason code", () => {
       privacyManifests: [
         {
           path: "PrivacyInfo.xcprivacy",
-          accessedApiTypes: [{ category: "NSPrivacyAccessedAPICategoryUserDefaults", reasons: ["9999.9"] }],
+          accessedApiTypes: [
+            { category: "NSPrivacyAccessedAPICategoryUserDefaults", reasons: ["9999.9"] },
+          ],
         },
       ],
     }),

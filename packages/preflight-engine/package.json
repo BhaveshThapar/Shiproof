@@ -12,12 +12,22 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "!dist/**/__tests__/**", "README.md"],
+  "files": [
+    "dist",
+    "!dist/**/__tests__/**",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc -b",
     "test": "tsc -b && node --test \"dist/**/*.test.js\""
   },
-  "keywords": ["app-store", "ios", "privacy-manifest", "app-review", "preflight"],
+  "keywords": [
+    "app-store",
+    "ios",
+    "privacy-manifest",
+    "app-review",
+    "preflight"
+  ],
   "sideEffects": false,
   "repository": {
     "type": "git",
@@ -26,5 +36,7 @@
   },
   "homepage": "https://github.com/BhaveshThapar/AeroDeploy/tree/main/packages/preflight-engine#readme",
   "bugs": "https://github.com/BhaveshThapar/AeroDeploy/issues",
-  "publishConfig": { "access": "public" }
+  "publishConfig": {
+    "access": "public"
+  }
 }

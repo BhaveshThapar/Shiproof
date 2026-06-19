@@ -8,7 +8,7 @@ findings.
 import { runPreflight, type ProjectSnapshot } from "@aerodeploy/preflight-engine";
 
 const snapshot: ProjectSnapshot = {
-  sourceFiles: [{ path: "App/Store.swift", content: "UserDefaults.standard.set(1, forKey: \"k\")" }],
+  sourceFiles: [{ path: "App/Store.swift", content: 'UserDefaults.standard.set(1, forKey: "k")' }],
   privacyManifests: [],
   infoPlists: [],
   metadata: { privacyPolicyUrl: "" },

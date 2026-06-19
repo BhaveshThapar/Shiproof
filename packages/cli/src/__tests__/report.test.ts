@@ -19,8 +19,14 @@ test("hashes each source file and is deterministic", () => {
 });
 
 test("different content produces a different file hash and artifact hash", () => {
-  const a = buildIntakePayload(snapshot({ sourceFiles: [{ path: "A.swift", content: "v1" }] }), META);
-  const b = buildIntakePayload(snapshot({ sourceFiles: [{ path: "A.swift", content: "v2" }] }), META);
+  const a = buildIntakePayload(
+    snapshot({ sourceFiles: [{ path: "A.swift", content: "v1" }] }),
+    META,
+  );
+  const b = buildIntakePayload(
+    snapshot({ sourceFiles: [{ path: "A.swift", content: "v2" }] }),
+    META,
+  );
   assert.notEqual(a.fileHashes["A.swift"], b.fileHashes["A.swift"]);
   assert.notEqual(a.artifactHash, b.artifactHash);
 });
@@ -42,7 +48,10 @@ test("includes manifest and metadata hashes only when present", () => {
 });
 
 test("carries the build metadata and predicted reasons", () => {
-  const payload = buildIntakePayload(snapshot({}), { ...META, predictedReasons: ["required-reason-api"] });
+  const payload = buildIntakePayload(snapshot({}), {
+    ...META,
+    predictedReasons: ["required-reason-api"],
+  });
   assert.equal(payload.appId, "app1");
   assert.equal(payload.submissionId, "N1");
   assert.deepEqual(payload.predictedReasons, ["required-reason-api"]);

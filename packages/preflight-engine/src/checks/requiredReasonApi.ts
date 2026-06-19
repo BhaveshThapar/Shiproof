@@ -1,6 +1,7 @@
 import type { Finding, ProjectSnapshot } from "../types.js";
 import { GUIDELINES } from "../guidelines.js";
 import { lineOf } from "./util.js";
+import { maskComments } from "./source.js";
 
 /**
  * Required-reason APIs (Apple): using one of these without declaring the
@@ -82,15 +83,16 @@ function firstUsages(snapshot: ProjectSnapshot): Map<string, Usage> {
   const found = new Map<string, Usage>();
   for (const file of snapshot.sourceFiles) {
     if (!isAppSource(file.path)) continue;
+    const content = maskComments(file.content);
     for (const category of REQUIRED_REASON_CATEGORIES) {
       if (found.has(category.category)) continue;
       for (const pattern of category.patterns) {
-        const match = pattern.exec(file.content);
+        const match = pattern.exec(content);
         if (match) {
           found.set(category.category, {
             category,
             file: file.path,
-            line: lineOf(file.content, match.index),
+            line: lineOf(content, match.index),
           });
           break;
         }

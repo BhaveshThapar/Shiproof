@@ -22,9 +22,7 @@ test("passes when the usage description is present and non-empty", () => {
   const findings = scanPurposeStrings(
     snapshot({
       sourceFiles: [{ path: "Cam.swift", content: "AVCaptureSession()" }],
-      infoPlists: [
-        { path: "Info.plist", values: { NSCameraUsageDescription: "Scan receipts." } },
-      ],
+      infoPlists: [{ path: "Info.plist", values: { NSCameraUsageDescription: "Scan receipts." } }],
     }),
   );
   assert.equal(findings.length, 0);

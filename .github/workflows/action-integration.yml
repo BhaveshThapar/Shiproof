@@ -1,0 +1,48 @@
+name: Action integration
+
+# End-to-end check of the pre-flight pipeline the composite Action wraps
+# (ROADMAP §A). Builds the packages and runs the CLI exactly as the Action does
+# — clean input must pass the `--fail-on=error` gate, dirty input must fail it —
+# so a regression in scan/gate behaviour is caught on every PR, not at publish.
+#
+# This exercises the LOCAL build. Once @aerodeploy/cli is published to npm, a
+# second job can additionally run the published composite action via
+# `uses: ./packages/action` to cover the npx wrapper.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  run-action-on-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+
+      - name: Clean app passes the error gate (exit 0)
+        run: |
+          node packages/cli/dist/index.js \
+            packages/cli/eval-corpus/clean-swiftui-weather --fail-on=error
+
+      - name: Dirty app fails the error gate (non-zero)
+        run: |
+          if node packages/cli/dist/index.js \
+            packages/cli/eval-corpus/dirty-tracking --fail-on=error; then
+            echo "::error::dirty fixture should have failed the --fail-on=error gate"
+            exit 1
+          fi
+          echo "dirty fixture correctly failed the gate"
+
+      - name: JSON output is well-formed and reports findings
+        run: |
+          node packages/cli/dist/index.js \
+            packages/cli/eval-corpus/dirty-tracking --json --min-severity=info > out.json
+          jq -e '.findings | length > 0' out.json > /dev/null \
+            || { echo "::error::expected non-empty findings[] in JSON output"; exit 1; }

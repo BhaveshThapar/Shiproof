@@ -34,14 +34,22 @@ test("errors on missing bundle id and missing version", () => {
 
 test("warns on a placeholder bundle id", () => {
   const findings = scanInfoPlistConfig(
-    withPlists({ path: "Info.plist", values: { CFBundleIdentifier: "com.example.app", CFBundleShortVersionString: "1.0" } }),
+    withPlists({
+      path: "Info.plist",
+      values: { CFBundleIdentifier: "com.example.app", CFBundleShortVersionString: "1.0" },
+    }),
   );
-  assert.ok(findings.some((f) => f.title === "Placeholder bundle identifier" && f.severity === "warning"));
+  assert.ok(
+    findings.some((f) => f.title === "Placeholder bundle identifier" && f.severity === "warning"),
+  );
 });
 
 test("info when export-compliance key is absent", () => {
   const findings = scanInfoPlistConfig(
-    withPlists({ path: "Info.plist", values: { CFBundleIdentifier: "com.acme.app", CFBundleShortVersionString: "1.0" } }),
+    withPlists({
+      path: "Info.plist",
+      values: { CFBundleIdentifier: "com.acme.app", CFBundleShortVersionString: "1.0" },
+    }),
   );
   assert.ok(findings.some((f) => f.severity === "info" && /export-compliance/i.test(f.title)));
 });
@@ -50,7 +58,10 @@ test("treats a key as present if any Info.plist declares it", () => {
   const findings = scanInfoPlistConfig(
     withPlists(
       { path: "App/Info.plist", values: { CFBundleIdentifier: "com.acme.app" } },
-      { path: "Tests/Info.plist", values: { CFBundleShortVersionString: "1.0", ITSAppUsesNonExemptEncryption: false } },
+      {
+        path: "Tests/Info.plist",
+        values: { CFBundleShortVersionString: "1.0", ITSAppUsesNonExemptEncryption: false },
+      },
     ),
   );
   assert.equal(findings.filter((f) => f.severity === "error").length, 0);

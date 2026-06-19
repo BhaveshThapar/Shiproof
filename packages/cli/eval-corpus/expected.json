@@ -1,0 +1,15 @@
+{
+  "clean-swiftui-weather": { "kind": "clean" },
+  "clean-uikit-todo": { "kind": "clean" },
+  "clean-game": { "kind": "clean" },
+  "dirty-tracking": {
+    "kind": "dirty",
+    "expectCheckIds": ["purpose-string", "required-reason-api"],
+    "minErrors": 2
+  },
+  "dirty-metadata": {
+    "kind": "dirty",
+    "expectCheckIds": ["metadata-placeholder", "metadata-privacy-policy"],
+    "minErrors": 1
+  }
+}

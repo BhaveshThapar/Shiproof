@@ -1,0 +1,10 @@
+{
+  "name": "Skyline Weather",
+  "subtitle": "Hyperlocal forecasts",
+  "description": "Skyline shows a beautiful, accurate forecast for wherever you are. Hourly and 10-day outlooks, severe-weather alerts, and a clean widget. No ads, no tracking.",
+  "keywords": "weather,forecast,radar,rain,temperature",
+  "releaseNotes": "Faster radar tiles and a redesigned hourly view.",
+  "privacyPolicyUrl": "https://skyline.example/privacy",
+  "supportUrl": "https://skyline.example/support",
+  "marketingUrl": "https://skyline.example"
+}

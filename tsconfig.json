@@ -1,7 +1,4 @@
 {
   "files": [],
-  "references": [
-    { "path": "./packages/preflight-engine" },
-    { "path": "./packages/cli" }
-  ]
+  "references": [{ "path": "./packages/preflight-engine" }, { "path": "./packages/cli" }]
 }

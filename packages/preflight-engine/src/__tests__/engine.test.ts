@@ -5,7 +5,7 @@ import type { ProjectSnapshot } from "../types.js";
 
 const DIRTY: ProjectSnapshot = {
   sourceFiles: [
-    { path: "App/Store.swift", content: "UserDefaults.standard.set(true, forKey: \"seen\")" },
+    { path: "App/Store.swift", content: 'UserDefaults.standard.set(true, forKey: "seen")' },
     { path: "App/Cam.swift", content: "let s = AVCaptureSession()" },
   ],
   privacyManifests: [],
@@ -37,7 +37,10 @@ test("minSeverity=error filters out warnings", () => {
   const snapshot: ProjectSnapshot = {
     sourceFiles: [{ path: "S.swift", content: "UserDefaults.standard" }],
     privacyManifests: [
-      { path: "PrivacyInfo.xcprivacy", accessedApiTypes: [{ category: "NSPrivacyAccessedAPICategoryUserDefaults", reasons: [] }] },
+      {
+        path: "PrivacyInfo.xcprivacy",
+        accessedApiTypes: [{ category: "NSPrivacyAccessedAPICategoryUserDefaults", reasons: [] }],
+      },
     ],
     infoPlists: [],
     metadata: { privacyPolicyUrl: "https://example.com/p" },
@@ -54,7 +57,10 @@ test("a clean project passes with no blocking findings", () => {
     sourceFiles: [{ path: "Math.swift", content: "let x = 1 + 1" }],
     privacyManifests: [],
     infoPlists: [],
-    metadata: { description: "A simple calculator.", privacyPolicyUrl: "https://example.com/privacy" },
+    metadata: {
+      description: "A simple calculator.",
+      privacyPolicyUrl: "https://example.com/privacy",
+    },
   };
   const result = runPreflight(clean);
   assert.deepEqual(result.findings, []);

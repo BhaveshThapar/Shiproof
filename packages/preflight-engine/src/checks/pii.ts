@@ -1,6 +1,7 @@
 import type { Finding, InfoPlist, ProjectSnapshot } from "../types.js";
 import { GUIDELINES } from "../guidelines.js";
 import { lineOf } from "./util.js";
+import { maskComments } from "./source.js";
 
 /**
  * Sensitive-API usage that requires a purpose string in Info.plist. Using the
@@ -81,10 +82,14 @@ function hasNonEmptyKey(plists: InfoPlist[], key: string): boolean {
 export function scanPurposeStrings(snapshot: ProjectSnapshot): Finding[] {
   const findings: Finding[] = [];
 
+  // Mask comments once per file (API names mentioned in comments are not usage).
+  const sources = snapshot.sourceFiles
+    .filter((file) => isAppSource(file.path))
+    .map((file) => ({ path: file.path, content: maskComments(file.content) }));
+
   for (const rule of PURPOSE_STRING_RULES) {
     let hit: { file: string; line: number } | undefined;
-    for (const file of snapshot.sourceFiles) {
-      if (!isAppSource(file.path)) continue;
+    for (const file of sources) {
       for (const pattern of rule.patterns) {
         const match = pattern.exec(file.content);
         if (match) {

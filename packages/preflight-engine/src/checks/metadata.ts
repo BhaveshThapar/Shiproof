@@ -7,13 +7,15 @@ import { GUIDELINES } from "../guidelines.js";
  * (from an export or a local config file).
  */
 
+// Only unambiguous leftover markers — bare "placeholder" is intentionally NOT
+// here: real listings legitimately describe "placeholder text" UI, so matching it
+// is a false positive (the wedge's enemy). See eval-corpus/clean-uikit-todo.
 const PLACEHOLDER_PATTERNS: { re: RegExp; what: string }[] = [
   { re: /lorem ipsum/i, what: '"lorem ipsum" placeholder text' },
   { re: /\bTODO\b/, what: "a TODO marker" },
   { re: /\bFIXME\b/, what: "a FIXME marker" },
   { re: /your app name/i, what: 'the literal "your app name" placeholder' },
-  { re: /\bplaceholder\b/i, what: 'the word "placeholder"' },
-  { re: /lacalhost|localhost:\d+/i, what: "a localhost reference" },
+  { re: /\blocalhost\b/i, what: "a localhost reference" },
 ];
 
 const OTHER_PLATFORM_PATTERNS: { re: RegExp; what: string }[] = [
@@ -87,7 +89,8 @@ export function lintMetadata(metadata: AppMetadata | undefined): Finding[] {
       checkId: "metadata-privacy-policy",
       severity: "error",
       title: "Missing privacy policy URL",
-      detail: "No privacy policy URL is set. Apple requires every app to have a privacy policy link.",
+      detail:
+        "No privacy policy URL is set. Apple requires every app to have a privacy policy link.",
       fix: "Add a reachable https privacy policy URL in App Store Connect (App Privacy section).",
       guideline: GUIDELINES.dataCollection,
     });

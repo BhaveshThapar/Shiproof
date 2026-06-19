@@ -1,0 +1,9 @@
+{
+  "name": "FieldNotes To-Do",
+  "subtitle": "Lists that stay out of your way",
+  "description": "FieldNotes is a fast, private to-do list. Create lists, reorder by drag, and start new items with customizable placeholder text so your lists never look empty. Everything stays on your device.",
+  "keywords": "todo,tasks,lists,reminders,productivity",
+  "releaseNotes": "You can now set per-list placeholder text for new items.",
+  "privacyPolicyUrl": "https://fieldnotes.example/privacy",
+  "supportUrl": "https://fieldnotes.example/support"
+}

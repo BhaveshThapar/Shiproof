@@ -34,5 +34,8 @@ test("dirty-app fixture surfaces every expected mechanical cause", () => {
   assert.ok(checkIds.has("metadata-privacy-policy"), "empty privacy policy url");
   assert.ok(checkIds.has("metadata-invalid-url"), "invalid support url");
 
-  assert.ok(result.summary.error >= 4, `expected several blocking errors, got ${result.summary.error}`);
+  assert.ok(
+    result.summary.error >= 4,
+    `expected several blocking errors, got ${result.summary.error}`,
+  );
 });

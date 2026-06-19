@@ -52,10 +52,13 @@ export function buildIntakePayload(snapshot: ProjectSnapshot, meta: ReportMeta):
     artifactHash,
     fileHashes,
   };
-  if (snapshot.privacyManifests.length > 0) payload.manifestHash = sha256(JSON.stringify(snapshot.privacyManifests));
-  if (snapshot.infoPlists.length > 0) payload.infoPlistHash = sha256(JSON.stringify(snapshot.infoPlists));
+  if (snapshot.privacyManifests.length > 0)
+    payload.manifestHash = sha256(JSON.stringify(snapshot.privacyManifests));
+  if (snapshot.infoPlists.length > 0)
+    payload.infoPlistHash = sha256(JSON.stringify(snapshot.infoPlists));
   if (snapshot.metadata) payload.metadataHash = sha256(JSON.stringify(snapshot.metadata));
-  if (meta.predictedReasons && meta.predictedReasons.length > 0) payload.predictedReasons = meta.predictedReasons;
+  if (meta.predictedReasons && meta.predictedReasons.length > 0)
+    payload.predictedReasons = meta.predictedReasons;
   return payload;
 }
 
