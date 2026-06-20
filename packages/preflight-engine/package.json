@@ -1,5 +1,5 @@
 {
-  "name": "@aerodeploy/preflight-engine",
+  "name": "@shiproof/preflight-engine",
   "version": "0.1.0",
   "description": "Pure, deterministic rules engine for the high-frequency mechanical App Store rejection causes (privacy manifest, required-reason APIs, PII usage descriptions, metadata).",
   "license": "MIT",
@@ -31,11 +31,11 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BhaveshThapar/AeroDeploy.git",
+    "url": "git+https://github.com/BhaveshThapar/Shiproof.git",
     "directory": "packages/preflight-engine"
   },
-  "homepage": "https://github.com/BhaveshThapar/AeroDeploy/tree/main/packages/preflight-engine#readme",
-  "bugs": "https://github.com/BhaveshThapar/AeroDeploy/issues",
+  "homepage": "https://github.com/BhaveshThapar/Shiproof/tree/main/packages/preflight-engine#readme",
+  "bugs": "https://github.com/BhaveshThapar/Shiproof/issues",
   "publishConfig": {
     "access": "public"
   }

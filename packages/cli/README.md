@@ -1,10 +1,10 @@
-# @aerodeploy/cli
+# @shiproof/cli
 
 Pre-flight your iOS project for the high-frequency **mechanical** App Store rejection
 causes — privacy manifest gaps, required-reason APIs, missing PII usage descriptions, and
 metadata problems — _before_ you submit. Deterministic, high-precision, runs fully offline.
 
-The CLI is the I/O layer around [`@aerodeploy/preflight-engine`](https://www.npmjs.com/package/@aerodeploy/preflight-engine):
+The CLI is the I/O layer around [`@shiproof/preflight-engine`](https://www.npmjs.com/package/@shiproof/preflight-engine):
 it walks a directory, parses `PrivacyInfo.xcprivacy`, `Info.plist`, and metadata into a
 snapshot, runs the pure engine, and prints findings.
 
@@ -12,11 +12,11 @@ snapshot, runs the pure engine, and prints findings.
 
 ```sh
 # one-off, no install
-npx @aerodeploy/cli .
+npx @shiproof/cli .
 
 # or install globally
-npm install -g @aerodeploy/cli
-aerodeploy .
+npm install -g @shiproof/cli
+shiproof .
 ```
 
 Requires Node ≥20.
@@ -24,7 +24,7 @@ Requires Node ≥20.
 ## Usage
 
 ```sh
-aerodeploy [path] [options]
+shiproof [path] [options]
 ```
 
 ```
@@ -38,9 +38,9 @@ Options:
 Examples:
 
 ```sh
-aerodeploy ./MyApp                      # human-readable report, fails on errors
-aerodeploy ./MyApp --json               # machine-readable for CI
-aerodeploy ./MyApp --min-severity=warning --fail-on=warning
+shiproof ./MyApp                      # human-readable report, fails on errors
+shiproof ./MyApp --json               # machine-readable for CI
+shiproof ./MyApp --min-severity=warning --fail-on=warning
 ```
 
 ## Exit codes
@@ -59,7 +59,7 @@ Walking `path`, the CLI parses and checks:
 
 - `PrivacyInfo.xcprivacy` — required-reason API declarations.
 - `Info.plist` — PII usage descriptions, bundle id, version, export compliance.
-- `aerodeploy.metadata.json` — App Store metadata (placeholder text, other-platform
+- `shiproof.metadata.json` — App Store metadata (placeholder text, other-platform
   mentions, privacy-policy URL).
 
 Binary plists are rejected with a note; convert to XML (`plutil -convert xml1`).
@@ -72,11 +72,11 @@ report to the job summary.
 
 ## Opt-in corpus reporting
 
-The CLI can optionally report a build fingerprint to an AeroDeploy backend
-(`--report-url`, with `$AERODEPLOY_API_KEY`, `--app-id`, `--submission-id`). This is
+The CLI can optionally report a build fingerprint to an Shiproof backend
+(`--report-url`, with `$SHIPROOF_API_KEY`, `--app-id`, `--submission-id`). This is
 **strictly opt-in**, off by default, and **never changes the exit code** — the checker
 always works fully offline. The API key is read only from the environment, never from a
-flag, so it can't leak into process listings. Run `aerodeploy --help` for the full list.
+flag, so it can't leak into process listings. Run `shiproof --help` for the full list.
 
 ## License
 

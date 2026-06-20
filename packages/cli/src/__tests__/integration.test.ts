@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
-import { runPreflight } from "@aerodeploy/preflight-engine";
+import { runPreflight } from "@shiproof/preflight-engine";
 import { scanProject } from "../scan.js";
 
 // Fixtures live outside src/ so tsc never compiles them. Resolve relative to the

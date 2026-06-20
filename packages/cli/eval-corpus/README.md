@@ -22,7 +22,7 @@ Each entry is a directory the CLI can scan (same shape a real iOS repo has):
   App/*.swift            source the required-reason + purpose-string checks read
   App/Info.plist         CFBundleIdentifier / version / purpose strings / export key
   App/PrivacyInfo.xcprivacy   declared required-reason APIs
-  aerodeploy.metadata.json    App Store Connect listing metadata
+  shiproof.metadata.json    App Store Connect listing metadata
 ```
 
 `expected.json` maps each directory to its expectation:

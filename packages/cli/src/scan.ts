@@ -6,7 +6,7 @@ import type {
   PrivacyManifest,
   ProjectSnapshot,
   SourceFile,
-} from "@aerodeploy/preflight-engine";
+} from "@shiproof/preflight-engine";
 import { isPlistDict, parsePlist, type PlistValue } from "./plist.js";
 
 const SOURCE_EXT = /\.(swift|m|mm|h|c|cc|cpp)$/i;
@@ -141,7 +141,7 @@ function readInfoPlist(full: string, rel: string, warnings: string[]): InfoPlist
 }
 
 function readMetadata(root: string, warnings: string[]): AppMetadata | undefined {
-  const file = join(root, "aerodeploy.metadata.json");
+  const file = join(root, "shiproof.metadata.json");
   let text: string;
   try {
     text = readFileSync(file, "utf8");
@@ -151,10 +151,10 @@ function readMetadata(root: string, warnings: string[]): AppMetadata | undefined
   try {
     const parsed: unknown = JSON.parse(text);
     if (parsed && typeof parsed === "object") return parsed as AppMetadata;
-    warnings.push("aerodeploy.metadata.json is not a JSON object; ignoring.");
+    warnings.push("shiproof.metadata.json is not a JSON object; ignoring.");
     return undefined;
   } catch (err) {
-    warnings.push(`Could not parse aerodeploy.metadata.json: ${errText(err)}`);
+    warnings.push(`Could not parse shiproof.metadata.json: ${errText(err)}`);
     return undefined;
   }
 }

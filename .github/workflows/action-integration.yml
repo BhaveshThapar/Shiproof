@@ -5,7 +5,7 @@ name: Action integration
 # — clean input must pass the `--fail-on=error` gate, dirty input must fail it —
 # so a regression in scan/gate behaviour is caught on every PR, not at publish.
 #
-# This exercises the LOCAL build. Once @aerodeploy/cli is published to npm, a
+# This exercises the LOCAL build. Once @shiproof/cli is published to npm, a
 # second job can additionally run the published composite action via
 # `uses: ./packages/action` to cover the npx wrapper.
 

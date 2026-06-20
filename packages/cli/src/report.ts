@@ -1,8 +1,8 @@
 import { createHash } from "node:crypto";
-import type { ProjectSnapshot } from "@aerodeploy/preflight-engine";
+import type { ProjectSnapshot } from "@shiproof/preflight-engine";
 
 /**
- * Optional corpus intake: report this build's fingerprint to an AeroDeploy
+ * Optional corpus intake: report this build's fingerprint to an Shiproof
  * backend at pre-flight. This is what lets the backend later diff build N vs N+1
  * and learn which fix flipped a rejection. It is strictly opt-in (only runs when
  * --report-url + an API key are provided) and never affects the local check's

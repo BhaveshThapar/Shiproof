@@ -4,7 +4,7 @@ import {
   type Finding,
   type PreflightResult,
   type Severity,
-} from "@aerodeploy/preflight-engine";
+} from "@shiproof/preflight-engine";
 import { scanProject } from "./scan.js";
 import { buildIntakePayload, reportPreflight } from "./report.js";
 
@@ -36,12 +36,12 @@ function parseArgs(argv: string[]): CliOptions {
     json: false,
     minSeverity: "info",
     failOn: "error",
-    buildNumber: process.env["AERODEPLOY_BUILD_NUMBER"] ?? "0",
-    commitSha: process.env["GITHUB_SHA"] ?? process.env["AERODEPLOY_COMMIT"] ?? "unknown",
+    buildNumber: process.env["SHIPROOF_BUILD_NUMBER"] ?? "0",
+    commitSha: process.env["GITHUB_SHA"] ?? process.env["SHIPROOF_COMMIT"] ?? "unknown",
   };
-  const reportUrl = process.env["AERODEPLOY_REPORT_URL"];
+  const reportUrl = process.env["SHIPROOF_REPORT_URL"];
   if (reportUrl) options.reportUrl = reportUrl;
-  const apiKey = process.env["AERODEPLOY_API_KEY"];
+  const apiKey = process.env["SHIPROOF_API_KEY"];
   if (apiKey) options.apiKey = apiKey;
 
   for (const arg of argv) {
@@ -80,29 +80,29 @@ function parseSeverity(value: string | undefined, flag: string): Severity {
 }
 
 function fail(message: string): never {
-  process.stderr.write(`aerodeploy: ${message}\n`);
+  process.stderr.write(`shiproof: ${message}\n`);
   process.exit(2);
 }
 
 function printHelp(): void {
   process.stdout.write(
     [
-      "aerodeploy — pre-flight your iOS app for mechanical App Store rejection causes",
+      "shiproof — pre-flight your iOS app for mechanical App Store rejection causes",
       "",
-      "Usage: aerodeploy [path] [options]",
+      "Usage: shiproof [path] [options]",
       "",
       "Options:",
       "  --json                 Output machine-readable JSON",
       "  --min-severity=LEVEL   Only show findings at LEVEL or above (error|warning|info)",
       "  --fail-on=LEVEL        Exit non-zero when a finding at LEVEL or above exists (default: error)",
-      "  --report-url=URL       Report this build to an AeroDeploy backend (opt-in corpus intake)",
+      "  --report-url=URL       Report this build to an Shiproof backend (opt-in corpus intake)",
       "  --app-id=ID            App id for reporting (with --report-url)",
       "  --submission-id=ID     Submission/version id for reporting",
-      "  --build-number=N       Build number (default: $AERODEPLOY_BUILD_NUMBER)",
+      "  --build-number=N       Build number (default: $SHIPROOF_BUILD_NUMBER)",
       "  --commit=SHA           Commit sha (default: $GITHUB_SHA)",
       "  -h, --help             Show this help",
       "",
-      "Reporting uses $AERODEPLOY_API_KEY (never passed as a flag). It is opt-in",
+      "Reporting uses $SHIPROOF_API_KEY (never passed as a flag). It is opt-in",
       "and never changes the exit code — the checker works fully offline.",
       "",
       "Exit codes: 0 clean, 1 findings at/above --fail-on, 2 usage error.",
@@ -113,7 +113,7 @@ function printHelp(): void {
 
 function formatHuman(result: PreflightResult, warnings: string[], path: string): string {
   const lines: string[] = [];
-  lines.push(`AeroDeploy pre-flight — ${path}`);
+  lines.push(`Shiproof pre-flight — ${path}`);
   lines.push("");
 
   if (result.findings.length === 0) {
@@ -168,13 +168,13 @@ async function reportIfConfigured(
     const res = await reportPreflight(payload, { url: options.reportUrl, apiKey: options.apiKey });
     process.stderr.write(
       res.ok
-        ? "aerodeploy: build reported to corpus\n"
-        : `aerodeploy: report failed (http ${res.status})\n`,
+        ? "shiproof: build reported to corpus\n"
+        : `shiproof: report failed (http ${res.status})\n`,
     );
   } catch (err) {
     // Reporting must never break the check.
     process.stderr.write(
-      `aerodeploy: report skipped (${err instanceof Error ? err.message : String(err)})\n`,
+      `shiproof: report skipped (${err instanceof Error ? err.message : String(err)})\n`,
     );
   }
 }

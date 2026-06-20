@@ -1,5 +1,5 @@
 /**
- * Public types for the AeroDeploy pre-flight engine.
+ * Public types for the Shiproof pre-flight engine.
  *
  * The engine is intentionally PURE: it takes an already-parsed snapshot of a
  * project and returns findings. All file-system / network I/O lives in the

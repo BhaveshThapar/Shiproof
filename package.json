@@ -1,8 +1,8 @@
 {
-  "name": "aerodeploy-preflight",
+  "name": "shiproof-preflight",
   "version": "0.1.0",
   "private": true,
-  "description": "AeroDeploy open-source pre-flight: catch the mechanical App Store rejection causes before you submit.",
+  "description": "Shiproof open-source pre-flight: catch the mechanical App Store rejection causes before you submit.",
   "license": "MIT",
   "type": "module",
   "workspaces": [

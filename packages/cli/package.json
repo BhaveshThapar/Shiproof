@@ -1,11 +1,11 @@
 {
-  "name": "@aerodeploy/cli",
+  "name": "@shiproof/cli",
   "version": "0.1.0",
-  "description": "AeroDeploy pre-flight CLI: scan an iOS project for mechanical App Store rejection causes before you submit.",
+  "description": "Shiproof pre-flight CLI: scan an iOS project for mechanical App Store rejection causes before you submit.",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "aerodeploy": "./dist/index.js"
+    "shiproof": "./dist/index.js"
   },
   "files": [
     "dist",
@@ -18,7 +18,7 @@
     "test": "tsc -b && node --test \"dist/**/*.test.js\""
   },
   "dependencies": {
-    "@aerodeploy/preflight-engine": "0.1.0"
+    "@shiproof/preflight-engine": "0.1.0"
   },
   "keywords": [
     "app-store",
@@ -30,11 +30,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BhaveshThapar/AeroDeploy.git",
+    "url": "git+https://github.com/BhaveshThapar/Shiproof.git",
     "directory": "packages/cli"
   },
-  "homepage": "https://github.com/BhaveshThapar/AeroDeploy/tree/main/packages/cli#readme",
-  "bugs": "https://github.com/BhaveshThapar/AeroDeploy/issues",
+  "homepage": "https://github.com/BhaveshThapar/Shiproof/tree/main/packages/cli#readme",
+  "bugs": "https://github.com/BhaveshThapar/Shiproof/issues",
   "publishConfig": {
     "access": "public"
   }

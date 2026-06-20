@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { scanProject } from "../scan.js";
 
 function fixture(): string {
-  const root = mkdtempSync(join(tmpdir(), "aerodeploy-"));
+  const root = mkdtempSync(join(tmpdir(), "shiproof-"));
   mkdirSync(join(root, "App"));
   mkdirSync(join(root, "node_modules", "junk"), { recursive: true });
 
@@ -16,7 +16,7 @@ function fixture(): string {
   // Should be ignored:
   writeFileSync(join(root, "node_modules", "junk", "Ignore.swift"), "AVCaptureSession()");
   writeFileSync(
-    join(root, "aerodeploy.metadata.json"),
+    join(root, "shiproof.metadata.json"),
     JSON.stringify({ description: "A receipt scanner.", privacyPolicyUrl: "https://x.com/p" }),
   );
   return root;
@@ -45,7 +45,7 @@ test("builds a snapshot and skips ignored directories", () => {
 });
 
 test("surfaces a warning for a malformed privacy manifest, does not throw", () => {
-  const root = mkdtempSync(join(tmpdir(), "aerodeploy-"));
+  const root = mkdtempSync(join(tmpdir(), "shiproof-"));
   try {
     writeFileSync(join(root, "Broken.xcprivacy"), "<plist><dict><key>a</key></dict></plist>");
     const { snapshot, warnings } = scanProject(root);

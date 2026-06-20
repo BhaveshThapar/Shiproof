@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { runPreflight, type Finding } from "@aerodeploy/preflight-engine";
+import { runPreflight, type Finding } from "@shiproof/preflight-engine";
 import { scanProject } from "../scan.js";
 
 /**

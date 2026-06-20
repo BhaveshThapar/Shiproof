@@ -1,9 +1,9 @@
-# AeroDeploy Pre-flight
+# Shiproof Pre-flight
 
 Catch the mechanical App Store rejection causes **before** you submit — on every pull
 request, in under 10 minutes to install, no account migration.
 
-This is the free, open-source wedge of [AeroDeploy](./plan.md): a deterministic rules
+This is the free, open-source wedge of [Shiproof](./plan.md): a deterministic rules
 engine that flags the high-frequency, mechanical rejection causes Apple's automated
 review keeps catching in 2026:
 
@@ -19,28 +19,28 @@ this package. It either found a real, citable problem or it didn't.
 
 ## Packages
 
-| Package                                                       | What it is                                                                                 |
-| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [`@aerodeploy/preflight-engine`](./packages/preflight-engine) | Pure rules engine. Takes a parsed project snapshot, returns findings. Fully unit-tested.   |
-| [`@aerodeploy/cli`](./packages/cli)                           | `aerodeploy` CLI. Scans a directory, runs the engine, prints findings (human or `--json`). |
-| [`packages/action`](./packages/action)                        | The GitHub Action wrapper that runs the CLI on every PR.                                   |
+| Package                                                     | What it is                                                                               |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [`@shiproof/preflight-engine`](./packages/preflight-engine) | Pure rules engine. Takes a parsed project snapshot, returns findings. Fully unit-tested. |
+| [`@shiproof/cli`](./packages/cli)                           | `shiproof` CLI. Scans a directory, runs the engine, prints findings (human or `--json`). |
+| [`packages/action`](./packages/action)                      | The GitHub Action wrapper that runs the CLI on every PR.                                 |
 
 The deterministic engine is intentionally a standalone OSS package so the free Action
-and the paid AeroDeploy backend share **one** engine and **one** test suite, while the
+and the paid Shiproof backend share **one** engine and **one** test suite, while the
 corpus / prediction / appeal logic stays in a separate private codebase.
 
 ## Use it as a GitHub Action
 
 ```yaml
 # .github/workflows/preflight.yml
-name: AeroDeploy pre-flight
+name: Shiproof pre-flight
 on: [pull_request]
 jobs:
   preflight:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: aerodeploy/preflight-action@v1
+      - uses: shiproof/preflight-action@v1
         with:
           path: .
           fail-on: error
@@ -49,23 +49,23 @@ jobs:
 ## Use it as a CLI
 
 ```bash
-npx @aerodeploy/cli .                 # scan the current directory
-npx @aerodeploy/cli ./MyApp --json    # machine-readable output
-npx @aerodeploy/cli . --fail-on=warning
+npx @shiproof/cli .                 # scan the current directory
+npx @shiproof/cli ./MyApp --json    # machine-readable output
+npx @shiproof/cli . --fail-on=warning
 ```
 
 Exit codes: `0` clean, `1` findings at/above `--fail-on`, `2` usage error.
 
-### Optional: report builds to an AeroDeploy backend
+### Optional: report builds to an Shiproof backend
 
-The checker works fully offline. If you also use the paid AeroDeploy backend, the
+The checker works fully offline. If you also use the paid Shiproof backend, the
 CLI can report each build's fingerprint at pre-flight so the backend can later
 learn which fix resolved a rejection. It's strictly opt-in and never changes the
 exit code:
 
 ```bash
-AERODEPLOY_API_KEY=... AERODEPLOY_REPORT_URL=https://api.your-aerodeploy \
-  npx @aerodeploy/cli . --app-id=<asc-app-id> --submission-id=<version-id>
+SHIPROOF_API_KEY=... SHIPROOF_REPORT_URL=https://api.your-shiproof \
+  npx @shiproof/cli . --app-id=<asc-app-id> --submission-id=<version-id>
 ```
 
 The API key is read only from the environment (never a flag). Nothing is reported
@@ -73,7 +73,7 @@ unless `--report-url`, the API key, `--app-id`, and `--submission-id` are all se
 
 ### Optional: metadata linting
 
-Drop an `aerodeploy.metadata.json` at your project root (or export it from App Store
+Drop an `shiproof.metadata.json` at your project root (or export it from App Store
 Connect) to lint your listing copy too:
 
 ```json

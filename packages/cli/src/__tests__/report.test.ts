@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import type { ProjectSnapshot } from "@aerodeploy/preflight-engine";
+import type { ProjectSnapshot } from "@shiproof/preflight-engine";
 import { buildIntakePayload } from "../report.js";
 
 const META = { appId: "app1", submissionId: "N1", buildNumber: "2", commitSha: "def" };

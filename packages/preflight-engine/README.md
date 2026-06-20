@@ -1,11 +1,11 @@
-# @aerodeploy/preflight-engine
+# @shiproof/preflight-engine
 
 Pure, deterministic rules engine for the high-frequency mechanical App Store rejection
 causes. No I/O, no LLM, no network — give it a parsed project snapshot, get back
 findings.
 
 ```ts
-import { runPreflight, type ProjectSnapshot } from "@aerodeploy/preflight-engine";
+import { runPreflight, type ProjectSnapshot } from "@shiproof/preflight-engine";
 
 const snapshot: ProjectSnapshot = {
   sourceFiles: [{ path: "App/Store.swift", content: 'UserDefaults.standard.set(1, forKey: "k")' }],
@@ -19,7 +19,7 @@ const result = runPreflight(snapshot);
 // result.summary  -> { error, warning, info }
 ```
 
-The I/O of turning a directory into a `ProjectSnapshot` lives in `@aerodeploy/cli`, not
+The I/O of turning a directory into a `ProjectSnapshot` lives in `@shiproof/cli`, not
 here. That separation keeps every check a pure function and trivially testable.
 
 ## Checks

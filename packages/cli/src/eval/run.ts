@@ -6,7 +6,7 @@ import { evaluate, type EvalReport } from "./evaluate.js";
  * doubles as a CI gate.
  */
 function format(report: EvalReport): string {
-  const lines: string[] = ["AeroDeploy pre-flight — precision eval", ""];
+  const lines: string[] = ["Shiproof pre-flight — precision eval", ""];
 
   for (const app of report.apps) {
     if (app.kind === "clean") {
