@@ -72,7 +72,7 @@ report to the job summary.
 
 ## Opt-in corpus reporting
 
-The CLI can optionally report a build fingerprint to an Shiproof backend
+The CLI can optionally report a build fingerprint to a Shiproof backend
 (`--report-url`, with `$SHIPROOF_API_KEY`, `--app-id`, `--submission-id`). This is
 **strictly opt-in**, off by default, and **never changes the exit code** — the checker
 always works fully offline. The API key is read only from the environment, never from a

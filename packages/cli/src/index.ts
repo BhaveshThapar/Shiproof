@@ -95,7 +95,7 @@ function printHelp(): void {
       "  --json                 Output machine-readable JSON",
       "  --min-severity=LEVEL   Only show findings at LEVEL or above (error|warning|info)",
       "  --fail-on=LEVEL        Exit non-zero when a finding at LEVEL or above exists (default: error)",
-      "  --report-url=URL       Report this build to an Shiproof backend (opt-in corpus intake)",
+      "  --report-url=URL       Report this build to a Shiproof backend (opt-in corpus intake)",
       "  --app-id=ID            App id for reporting (with --report-url)",
       "  --submission-id=ID     Submission/version id for reporting",
       "  --build-number=N       Build number (default: $SHIPROOF_BUILD_NUMBER)",

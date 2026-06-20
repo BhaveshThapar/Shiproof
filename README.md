@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: shiproof/preflight-action@v1
+      - uses: BhaveshThapar/Shiproof/packages/action@v0.1.0
         with:
           path: .
           fail-on: error
@@ -56,7 +56,7 @@ npx @shiproof/cli . --fail-on=warning
 
 Exit codes: `0` clean, `1` findings at/above `--fail-on`, `2` usage error.
 
-### Optional: report builds to an Shiproof backend
+### Optional: report builds to a Shiproof backend
 
 The checker works fully offline. If you also use the paid Shiproof backend, the
 CLI can report each build's fingerprint at pre-flight so the backend can later
