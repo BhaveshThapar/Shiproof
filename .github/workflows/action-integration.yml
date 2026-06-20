@@ -42,7 +42,11 @@ jobs:
 
       - name: JSON output is well-formed and reports findings
         run: |
+          # Dirty input trips the default --fail-on=error gate, so the CLI exits
+          # non-zero by design (exit 1 == findings). We only care about the JSON
+          # payload here, so don't let that abort the step under `bash -e`; the
+          # jq check below is the real assertion and fails on empty/invalid JSON.
           node packages/cli/dist/index.js \
-            packages/cli/eval-corpus/dirty-tracking --json --min-severity=info > out.json
+            packages/cli/eval-corpus/dirty-tracking --json --min-severity=info > out.json || true
           jq -e '.findings | length > 0' out.json > /dev/null \
             || { echo "::error::expected non-empty findings[] in JSON output"; exit 1; }
